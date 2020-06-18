@@ -21,13 +21,15 @@ var wpInsertPages;
 			inputs.close = $( '#wp-insertpage-close' );
 			// Page info
 			inputs.slug = $( '#insertpage-slug-field' );
-			inputs.pageID = $( '#insertpage-pageID' );
-			inputs.parentPageID = $( '#insertpage-parent-pageID' );
+			inputs.pageID = $( '#insertpage-page-id' );
+			inputs.parentPageID = $( '#insertpage-parent-page-id' );
 			// Format field (title, link, content, all, choose a custom template ->)
 			inputs.format = $( '#insertpage-format-select' );
-			// Extra fields (wrapper classes, inline checkbox)
+			// Extra fields (wrapper classes, inline checkbox, "visible to all" checkbox)
 			inputs.extraClasses = $( '#insertpage-extra-classes' );
+			inputs.extraID = $( '#insertpage-extra-id' );
 			inputs.extraInline = $( '#insertpage-extra-inline' );
+			inputs.extraPublic = $( '#insertpage-extra-public' );
 			inputs.extraQuerystring = $( '#insertpage-extra-querystring' );
 			// Custom template select field
 			inputs.template = $( '#insertpage-template-select' );
@@ -241,13 +243,31 @@ var wpInsertPages;
 					inputs.extraClasses.val( '' );
 				}
 
+				// Update extra ID.
+				regexp = /id=['"]([^['"]*)['"]/;
+				matches = regexp.exec( shortcode );
+				if ( matches && matches.length > 1 ) {
+					inputs.extraID.val( matches[1] );
+				} else {
+					inputs.extraID.val( '' );
+				}
+
 				// Update extra inline (i.e., use span instead of div for wrapper).
-				regexp = /inline/;
+				regexp = /[\s]inline[\s\]]/;
 				matches = regexp.exec( shortcode );
 				if ( matches && matches.length > 0 ) {
 					inputs.extraInline.attr( 'checked', true );
 				} else {
 					inputs.extraInline.attr( 'checked', false );
+				}
+
+				// If this is a private page, reveal the checkbox "Visible to everyone?"
+				regexp = /[\s]public[\s\]]/;
+				matches = regexp.exec( shortcode );
+				if ( matches && matches.length > 0 ) {
+					inputs.extraPublic.attr( 'checked', true );
+				} else {
+					inputs.extraPublic.attr( 'checked', false );
 				}
 
 				// Update extra querystring.
@@ -279,6 +299,7 @@ var wpInsertPages;
 			inputs.format.change();
 			inputs.template.val('all');
 			inputs.extraClasses.val('');
+			inputs.extraID.val( '' );
 			inputs.extraInline.attr( 'checked', false );
 			inputs.search.val( '' );
 			inputs.search.data( 'type', 'text' );
@@ -307,7 +328,9 @@ var wpInsertPages;
 				pageID: inputs.pageID.val(),
 				display: inputs.format.val()=='template' ? inputs.template.val() : inputs.format.val(),
 				class: inputs.extraClasses.val(),
+				id: inputs.extraID.val(),
 				inline: inputs.extraInline.is( ':checked' ),
+				public: inputs.extraPublic.is( ':checked' ),
 				querystring: inputs.extraQuerystring.val(),
 			};
 		},
@@ -339,7 +362,9 @@ var wpInsertPages;
 				"page='" + attrs.page +"' " +
 				"display='" + attrs.display + "'" +
 				( attrs['class'].length > 0 ? " class='" + attrs['class'] + "'" : "" ) +
+				( attrs['id'].length > 0 ? " id='" + attrs['id'] + "'" : "" ) +
 				( attrs.inline ? " inline" : "" ) +
+				( attrs.public ? " public" : "" ) +
 				( attrs.querystring ? " querystring='" +
 					attrs['querystring'].replace( /&/g, '&amp;' ).replace( /\[/g, '{' ).replace( /\]/g, '}' )
 					+ "'" : ""
@@ -582,7 +607,9 @@ var wpInsertPages;
 					list += '<input type="hidden" class="item-id" value="' + this.ID + '" />';
 					list += '<span class="item-title">';
 					list += this.title ? this.title : wpInsertPagesL10n.noTitle;
-					list += '</span><span class="item-info">' + this.info + '</span></li>';
+					list += '</span><span class="item-info">' + this.info;
+					list += this.status === 'private' ? ' (' + wpInsertPagesL10n.private + ')' : '';
+					list += '</span></li>';
 					alt = ! alt;
 				});
 			}

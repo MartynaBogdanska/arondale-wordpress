@@ -2,7 +2,7 @@
 Contributors: figureone, the_magician
 Tags: insert, pages, shortcode, embed
 Requires at least: 3.0.1
-Tested up to: 4.9
+Tested up to: 5.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,35 @@ Just one! The plugin prevents you from embedding a page in itself, but you can t
 3. Insert Pages shortcode example.
 
 == Changelog ==
+
+= 3.4.6 =
+* Respect <!--more--> quicktag in excerpt and excerpt-only displays (in normal insert method).
+* Add a custom <!--crop--> quicktag in excerpt and excerpt-only displays (in normal insert method). Excerpt can be trimmed to anything between <!--crop--> and <!--more--> quicktags.
+
+= 3.4.5 =
+* Fix for nested inserted pages all using custom templates. Props @masterbip for discovering the issue!
+
+= 3.4.4 =
+* Fix incorrect link in excerpt's 'Continue reading' link. Props @bogyo74 for discovering the bug!
+* Fix empty id attribute rendering if no custom ID provided. Props @theschappy for finding and fixing this bug!
+
+= 3.4.3 =
+* Add 'id' shortcode param that sets the html id attribute on the wrapper element for an inserted page. Useful for anchor links. Props @Seb33300 for the suggestion!
+* Fix for WPBakery Visual Composer inline styles in inserted pages. Props @Seb33300 for the pull request!
+
+= 3.4.2 =
+* Add 'public' shortcode param that lets private inserted pages be visible to anonymous users. Props @ahtcx for the suggestion.
+* Fix for inserted pages shown on BuddyPress profiles. Props @IdleWanderer for the report!
+* Fix for querystring option missing from widget settings.
+
+= 3.4.1 =
+* Fix for Elementor rendering in legacy mode.
+* Fix for Post Thumbnail display in legacy mode.
+
+= 3.4.0 =
+* Add integration with WPBakery Page Builder (Visual Composer).
+* Fix error messages about deprecated functions in PHP 7.2.
+* Adhere to WordPress Coding Standards.
 
 = 3.3.0 =
 * Fix custom field values coming from parent post in certain contexts. Props @chrisneward for catching it!

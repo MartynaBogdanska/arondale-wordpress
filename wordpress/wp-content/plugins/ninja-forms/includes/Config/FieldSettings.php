@@ -60,7 +60,7 @@ return apply_filters( 'ninja_forms_field_settings', array(
             ),
         ),
         'width' => 'one-half',
-        'group' => 'primary',
+        'group' => 'advanced',
         'value' => 'default',
         'help' => __( 'Select the position of your label relative to the field element itself.', 'ninja-forms' ),
 
@@ -300,7 +300,7 @@ return apply_filters( 'ninja_forms_field_settings', array(
                 'options' => array(
                     array(
                         'label' => __( 'Character(s)', 'ninja-forms' ),
-                        'value' => 'char'
+                        'value' => 'characters'
                     ),
                     array(
                         'label' => __( 'Word(s)', 'ninja-forms' ),
@@ -356,7 +356,7 @@ return apply_filters( 'ninja_forms_field_settings', array(
         'type' => 'textbox',
         'label' => __( 'Placeholder', 'ninja-forms' ),
         'width' => 'full',
-        'group' => 'advanced',
+        'group' => 'display',
         'value' => '',
         'help' => __( 'Enter text you would like displayed in the field before a user enters any data.', 'ninja-forms' ),
         'use_merge_tags' => FALSE,
@@ -373,7 +373,7 @@ return apply_filters( 'ninja_forms_field_settings', array(
         'type' => 'textbox',
         'width' => 'full',
         'value' => '',
-        'group' => 'advanced',
+        'group' => 'display',
         'use_merge_tags' => array(
             'exclude' => array(
                 'fields'
@@ -653,6 +653,16 @@ return apply_filters( 'ninja_forms_field_settings', array(
         'help' => __( 'This column in the submissions table will sort by number.', 'ninja-forms' ),
     ),
 
+    'personally_identifiable'   => array(
+	    'name'           => 'personally_identifiable',
+	    'type'           => 'toggle',
+	    'group'          => 'advanced',
+	    'label'          => __( 'This Field Is Personally Identifiable Data', 'ninja-forms' ),
+	    'width'          => 'full',
+	    'value'          => '',
+	    'help' => __( 'This option helps with privacy regulation compliance', 'ninja-forms' ),
+    ),
+
     /*
      |--------------------------------------------------------------------------
      | Display Settings
@@ -665,7 +675,7 @@ return apply_filters( 'ninja_forms_field_settings', array(
         'type' => 'number',
         'label' => __( 'Multi-Select Box Size', 'ninja-forms'),
         'width' => 'one-half',
-        'group' => 'primary',
+        'group' => 'advanced',
         'value' => 5,
     ),
 

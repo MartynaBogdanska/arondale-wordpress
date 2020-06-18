@@ -27,20 +27,20 @@ $container = get_theme_mod( 'understrap_container_type' );
 						<div class="row">
   							<div class="col-md-6">
 								<h5>ABOUT</h5>
-								<p class="small">Arondale is a Queensland privately-owned commercial construction company founded in 1989 by Darryl Standfield. We focus on four key verticals: Medical, Education, Shopping Centres and Aged Care/Retirement.</p>
-								<p class="small">We pride ourselves on delivering complicated projects for our clients on-time, within budget and to a very high level of finish.</p>
+								<p class="small">Arondale is a Queensland privately-owned commercial construction company founded in 1989. Working with some of the industry’s best known commercial builders in that time, we have solidified our place as a market leader. Equipped with some of the industry’s best and supported by our loyal suppliers, Arondale strives on continuously achieving great results for our clients within budget to a high level of detail.</p>
+								<p class="small">We focus on five main key verticals: Medical, Education, Retail, Office and Aged Care/Retirement.</p>
 							</div>
 							<div class="col-md-3">
 								<h5>CONTACT</h5>
 								<p class="small">Arondale</p>
 								<p class="small">Unit 2 / 16 Perrin Place<br>Salisbury, QLD 4107</p>
-								<p class="small">enquiries@arondale.com.au</p>
+								<p class="small"><a href="mailto:enquiries@arondale.com.au">enquiries@arondale.com.au</a></p>
 								<p class="small">+61 (07) 3277 8000</p>
 							</div>
 							<div class="col-md-3">
 								<h5>SITE MAP</h5>
 								<p class="small"><a href="../#about">About</a></p>
-								<p class="small"><a href="../#pojects">Project</a></p>
+								<p class="small"><a href="../#projects">Project</a></p>
 								<p class="small"><a href="../#careers">Careers</a></p>
 								<p class="small"><a href="/terms-of-use">Terms of use</a></p>
 								<p class="small"><a href="/privacy-policy">Privacy policy</a></p>
@@ -58,7 +58,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 	<div class="site-rights text-center">
 		<div class="container small">
-			© Valiant Interiors Pty Ltd (trading as Arondale Interiors) 2018
+		© Arondale Pty Ltd 2019
 		</div>
 	</div><!-- .site-rights -->
 

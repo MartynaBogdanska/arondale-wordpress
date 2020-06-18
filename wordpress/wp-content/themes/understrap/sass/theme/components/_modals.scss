@@ -3,21 +3,29 @@
 \*---------------------------------------------------------------------------*/
 
 .modal-dialog {
-
     @include media-breakpoint-up(sm) {
         max-width: 600px;
     }
 }
 
+
 /**
 *** Bootstrap overwrites
 **/
+
+.modal-header {
+    padding: 1rem;
+}
 
 .modal-header .close {
     padding: 0;
     margin: 0;
     font-size: 2rem;
-    font-weight: 300;
+}
+
+.modal-title {
+    font-family: $font-sans-serif-bolder;
+    padding: 0.5rem;
 }
 
 .modal-footer {
@@ -27,10 +35,15 @@
     z-index: 100;
 }
 
+
 /**
 *** Ninja Form overwrites
 **/
 
 .nf-after-form-content {
     display: none;
+}
+
+.nf-field .nf-field-label label {
+    font-family: $font-sans-serif-bolder;
 }

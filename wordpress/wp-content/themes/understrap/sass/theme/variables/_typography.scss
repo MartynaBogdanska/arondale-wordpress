@@ -2,8 +2,16 @@
     #VARIABLES > #TYPOGRAPHY
 \*---------------------------------------------------------------------------*/
 
-$font-serif: 'Libre Baskerville', serif;
-$font-sans-serif: 'Raleway', 'Arial', sans-serif;
+// $font-serif: 'Libre Baskerville', serif;
+$font-serif: 'Nexa-Bold',
+serif;
+// $font-sans-serif: 'Raleway', 'Arial', sans-serif;
+$font-sans-serif: 'mrcDIN-Regular',
+'Arial',
+sans-serif;
+$font-sans-serif-bolder: 'mrcDIN-Medium',
+'Arial',
+sans-serif;
 
 /**
  * Based on a modular scale where:
@@ -18,8 +26,6 @@ $font-size-l: 1rem*1.5*0.4;
 $font-size-xl: 1rem*1.5*0.8;
 $font-size-xxl: 1rem*1.5;
 $font-size-xxxl: 1rem*1.5*1.5;
-
-
 $font-size-h1: $font-size-xxxl;
 $font-size-h2: $font-size-xxl;
 $font-size-h3: $font-size-xl;
@@ -27,9 +33,7 @@ $font-size-h4: $font-size-l;
 $font-size-h5: $font-size-m;
 $font-size-h6: $font-size-s;
 $font-size: $font-size-m;
-
 $line-height-base: 1.5;
-
 $font-weight-light: 200;
 $font-weight: 400;
 $font-weight-bold: 600;

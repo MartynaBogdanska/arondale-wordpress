@@ -1,11 +1,25 @@
 <?php
+/**
+ * Render the Insert Pages Settings page.
+ *
+ * @package insert-pages
+ */
 
+/**
+ * Add 'Insert Pages' to the Settings menu.
+ *
+ * @return void
+ */
 function wpip_add_admin_menu() {
 	add_options_page( 'Insert Pages', 'Insert Pages', 'manage_options', 'insert_pages', 'wpip_options_page' );
 }
 add_action( 'admin_menu', 'wpip_add_admin_menu' );
 
-
+/**
+ * Register settings fields.
+ *
+ * @return void
+ */
 function wpip_settings_init() {
 	register_setting( 'wpipSettings', 'wpip_settings' );
 	add_settings_section(
@@ -45,10 +59,14 @@ function wpip_settings_init() {
 }
 add_action( 'admin_init', 'wpip_settings_init' );
 
-
+/**
+ * Set meaningful defaults for settings.
+ *
+ * @return array Insert Pages settings.
+ */
 function wpip_set_defaults() {
 	$options = get_option( 'wpip_settings' );
-	if ( $options === FALSE ) {
+	if ( false === $options ) {
 		$options = array();
 	}
 
@@ -62,6 +80,13 @@ function wpip_set_defaults() {
 
 	if ( ! array_key_exists( 'wpip_insert_method', $options ) ) {
 		$options['wpip_insert_method'] = 'legacy';
+
+		// Set default to 'normal' if gutenberg plugin is enabled (legacy insert
+		// method will cause the gutenberg editor to load only the inserted page if
+		// an insert page shortcode exists in a Shortcode block anywhere on the page.
+		if ( function_exists( 'gutenberg_init' ) ) {
+			$options['wpip_insert_method'] = 'normal';
+		}
 	}
 
 	if ( ! array_key_exists( 'wpip_tinymce_filter', $options ) ) {
@@ -74,12 +99,20 @@ function wpip_set_defaults() {
 }
 register_activation_hook( __FILE__, 'wpip_set_defaults' );
 
-
+/**
+ * Print heading for Insert Pages settings page.
+ *
+ * @return void
+ */
 function wpip_settings_section_callback() {
-	echo __( 'You may override some default settings here.', 'insert-pages' );
+	esc_html_e( 'You may override some default settings here.', 'insert-pages' );
 }
 
-
+/**
+ * Print Insert Pages settings page.
+ *
+ * @return void
+ */
 function wpip_options_page() {
 	?>
 	<form action='options.php' method='post'>
@@ -92,10 +125,14 @@ function wpip_options_page() {
 	<?php
 }
 
-
+/**
+ * Print 'Format' setting.
+ *
+ * @return void
+ */
 function wpip_format_render() {
 	$options = get_option( 'wpip_settings' );
-	if ( $options === FALSE || ! is_array( $options ) || ! array_key_exists( 'wpip_format', $options ) ) {
+	if ( false === $options || ! is_array( $options ) || ! array_key_exists( 'wpip_format', $options ) ) {
 		$options = wpip_set_defaults();
 	}
 	?>
@@ -105,10 +142,14 @@ function wpip_format_render() {
 	<?php
 }
 
-
+/**
+ * Print 'Wrapper' setting.
+ *
+ * @return void
+ */
 function wpip_wrapper_render() {
 	$options = get_option( 'wpip_settings' );
-	if ( $options === FALSE || ! is_array( $options ) || ! array_key_exists( 'wpip_wrapper', $options ) ) {
+	if ( false === $options || ! is_array( $options ) || ! array_key_exists( 'wpip_wrapper', $options ) ) {
 		$options = wpip_set_defaults();
 	}
 	?>
@@ -118,21 +159,31 @@ function wpip_wrapper_render() {
 	<?php
 }
 
+/**
+ * Print 'Insert Method' setting.
+ *
+ * @return void
+ */
 function wpip_insert_method_render() {
 	$options = get_option( 'wpip_settings' );
-	if ( $options === FALSE || ! is_array( $options ) || ! array_key_exists( 'wpip_insert_method', $options ) ) {
+	if ( false === $options || ! is_array( $options ) || ! array_key_exists( 'wpip_insert_method', $options ) ) {
 		$options = wpip_set_defaults();
 	}
 	?>
 	<input type='radio' name='wpip_settings[wpip_insert_method]' <?php checked( $options['wpip_insert_method'], 'legacy' ); ?> id="wpip_insert_method_legacy" value='legacy'><label for="wpip_insert_method_legacy">Use legacy method (compatible with <a href="https://wordpress.org/plugins/beaver-builder-lite-version/" target="_blank">Beaver Builder</a> and <a href="https://wordpress.org/plugins/siteorigin-panels/" target="_blank">Page Builder by SiteOrigin</a>, but less efficient). </label><br />
-	<input type='radio' name='wpip_settings[wpip_insert_method]' <?php checked( $options['wpip_insert_method'], 'normal' ); ?> id="wpip_insert_method_normal" value='normal'><label for="wpip_insert_method_normal">Use normal method (more compatible with other plugins, and more efficient).</label><br />
+	<input type='radio' name='wpip_settings[wpip_insert_method]' <?php checked( $options['wpip_insert_method'], 'normal' ); ?> id="wpip_insert_method_normal" value='normal'><label for="wpip_insert_method_normal">Use normal method (more compatible with other plugins, and more efficient). Compatible with Gutenberg.</label><br />
 	<small><em>The legacy method uses <a href="https://codex.wordpress.org/Function_Reference/query_posts" target="_blank">query_posts()</a>, which the Codex cautions against using. However, to recreate the exact state that many page builder plugins are expecting, the Main Loop has to be replaced with the inserted page while it is being rendered. The normal method, on the other hand, just uses <a href="https://developer.wordpress.org/reference/functions/get_post/" target="_blank">get_post()</a>.</em></small>
 	<?php
 }
 
+/**
+ * Print 'TinyMCE Filter' setting.
+ *
+ * @return void
+ */
 function wpip_tinymce_filter_render() {
 	$options = get_option( 'wpip_settings' );
-	if ( $options === FALSE || ! is_array( $options ) || ! array_key_exists( 'wpip_tinymce_filter', $options ) ) {
+	if ( false === $options || ! is_array( $options ) || ! array_key_exists( 'wpip_tinymce_filter', $options ) ) {
 		$options = wpip_set_defaults();
 	}
 	?>
