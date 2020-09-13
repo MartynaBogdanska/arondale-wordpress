@@ -96,7 +96,7 @@ Duplicator.OpenLogWindow = function(target)
 	if (target != null) {
 		window.open('?page=duplicator-tools&tab=diagnostics&section=log', 'log-win');
 	} else {
-		window.open('<?php echo esc_js(DUPLICATOR_SSDIR_URL); ?>' + '/' + log)
+		window.open('<?php echo esc_js(DUP_Settings::getSsdirUrl()); ?>' + '/' + log)
 	}
 };
 
@@ -133,6 +133,31 @@ Duplicator.UI.SaveViewState = function (key, value)
 	}
 }
 
+/*	Saves multiple states of a UI element */ 
+Duplicator.UI.SaveMulViewStates = function (states)
+{
+	jQuery.ajax({
+		type: "POST",
+		url: ajaxurl,
+		dataType: "text",
+		data: {
+			action : 'DUP_CTRL_UI_SaveViewState',
+			states: states,
+			nonce: '<?php echo wp_create_nonce('DUP_CTRL_UI_SaveViewState'); ?>'
+		},
+		success: function(respData) {
+			try {
+				var data = Duplicator.parseJSON(respData);
+			} catch(err) {
+				console.error(err);
+				console.error('JSON parse failed for response data: ' + respData);
+				return false;
+			}
+		},
+		error: function(data) {}
+	});
+}
+
 /* Animates the progress bar */
 Duplicator.UI.AnimateProgressBar = function(id) 
 {
@@ -149,6 +174,7 @@ Duplicator.UI.AnimateProgressBar = function(id)
 	}
 }
 
+Duplicator.UI.IsSaveViewState = true;
 /* Toggle MetaBoxes */ 
 Duplicator.UI.ToggleMetaBox = function() 
 {
@@ -158,7 +184,8 @@ Duplicator.UI.ToggleMetaBox = function()
 	var key   = $panel.attr('id');
 	var value = $panel.is(":visible") ? 0 : 1;
 	$panel.toggle();
-	Duplicator.UI.SaveViewState(key, value);
+	if (Duplicator.UI.IsSaveViewState)
+		Duplicator.UI.SaveViewState(key, value);
 	(value) 
 		? $arrow.removeClass().addClass('fa fa-caret-up') 
 		: $arrow.removeClass().addClass('fa fa-caret-down');
@@ -184,7 +211,85 @@ Duplicator.UI.enable = function(item)
 //Init
 jQuery(document).ready(function($) 
 {
-	
+
+    Duplicator.UI.loadQtip = function()
+    {
+        //Look for tooltip data
+        $('[data-tooltip!=""]').qtip({
+            content: {
+                attr: 'data-tooltip',
+                title:  function() { 
+                    if ($(this)[0].hasAttribute("data-tooltip-title")) {
+                        return  $(this).data('tooltip-title');
+                    } else {
+                        return false;
+                    }
+                }
+            },
+            style: {
+                classes: 'qtip-light qtip-rounded qtip-shadow',
+                width: 500
+            },
+            position: {
+                my: 'top left',
+                at: 'bottom center'
+            }
+        });
+    }
+
+    Duplicator.UI.loadSimpeQtip = function()
+    {
+        //Look for tooltip data
+        $('[data-simpletip!=""]').qtip({
+            content: {
+                attr: 'data-simpletip'
+            },
+            style: {
+                classes: 'qtip-light qtip-rounded qtip-shadow'
+            },
+            position: {
+                my: 'top left',
+                at: 'bottom center'
+            }
+        });
+    }  
+
+    Duplicator.UI.Copytext = function () {
+        $('[data-dup-copy-text]').each(function () {
+            $(this).click(function () {
+                var elem = $(this);
+                var message = '';
+                var textToCopy = elem.data('dup-copy-text');
+                var tmpArea = jQuery("<textarea></textarea>").css({
+                    position: 'absolute',
+                    top: '-10000px'
+                }).text(textToCopy).appendTo( "body" );
+                tmpArea.select();
+                try {
+                    var successful = document.execCommand('copy');
+                    message = successful ? '<?php echo esc_html_e('Copied: ', 'duplicator'); ?>' + textToCopy : '<?php echo esc_html_e('unable to copy'); ?>';
+                } catch (err) {
+                    message = '<?php echo esc_html_e('unable to copy', 'duplicator'); ?>';
+                }
+                elem.qtip('option', 'content.text', message).qtip('show');
+                setTimeout(function(){ 
+                    elem.qtip('option', 'content.text', '<?php esc_html_e('Copy to Clipboard!', 'duplicator'); ?>');
+                }, 2000);
+            }).qtip({
+                content: {
+                    text: '<?php esc_html_e('Copy to Clipboard!', 'duplicator'); ?>'
+                },
+                style: {
+                    classes: 'qtip-light qtip-rounded qtip-shadow'
+                },
+                position: {
+                    my: 'top left',
+                    at: 'bottom center'
+                }
+            });
+        });
+    };
+
 	//INIT: Tabs
 	$("div[data-dup-tabs='true']").each(function () {
 
@@ -226,30 +331,10 @@ jQuery(document).ready(function($)
 			: $arrow.html('<i class="fa fa-caret-down"></i>');
 	});
 
-
-	Duplicator.UI.loadQtip = function()
-	{
-		//Look for tooltip data
-		$('i[data-tooltip!=""]').qtip({
-			content: {
-				attr: 'data-tooltip',
-				title: {
-					text: function() { return  $(this).attr('data-tooltip-title'); }
-				}
-			},
-			style: {
-				classes: 'qtip-light qtip-rounded qtip-shadow',
-				width: 500
-			},
-			 position: {
-				my: 'top left',
-				at: 'bottom center'
-			}
-		});
-	}
-
-	Duplicator.UI.loadQtip();
-
+    
+    Duplicator.UI.loadQtip();
+    Duplicator.UI.loadSimpeQtip();
+    Duplicator.UI.Copytext();
 
 	//HANDLEBARS HELPERS
 	if  (typeof(Handlebars) != "undefined"){
@@ -296,5 +381,25 @@ jQuery(document).ready(function($)
 	//Prevent notice boxes from flashing as its re-positioned in DOM
 	$('div.dup-wpnotice-box').show(300);
 
-});	
+});
+
+jQuery(document).ready(function($) {
+    $('.duplicator-message .notice-dismiss, .duplicator-message .duplicator-notice-dismiss, .duplicator-message  .duplicator-notice-rate-now').on('click', function (event) {
+		if ('button button-primary duplicator-notice-rate-now' !== $(event.target).attr('class')) {
+			event.preventDefault();
+		}
+        $.post(ajaxurl, {
+            action: 'duplicator_set_admin_notice_viewed',
+            notice_id: $(this).closest('.duplicator-message-dismissed').data('notice_id'),
+			nonce: '<?php echo wp_create_nonce('duplicator_set_admin_notice_viewed'); ?>'
+        });
+        var $wrapperElm = $(this).closest('.duplicator-message-dismissed');
+        $wrapperElm.fadeTo(100, 0, function () {
+            $wrapperElm.slideUp(100, function () {
+                $wrapperElm.remove();
+            });
+        });
+    });   
+});
+
 </script>

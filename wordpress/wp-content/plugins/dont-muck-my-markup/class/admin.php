@@ -8,9 +8,6 @@ Class Admin extends DMMM
     add_action( 'add_meta_boxes', array( &$this, 'create') );
     add_action( 'save_post', array( &$this, 'save') );
 
-    // Loads the stylesheet for the right pages
-    add_action( 'load-post.php', array( &$this, 'insertCSS') );
-    add_action( 'load-post-new.php', array( &$this, 'insertCSS') );
     add_action('admin_menu', array( &$this, 'global_page_init') );
   }
 
@@ -38,12 +35,6 @@ Class Admin extends DMMM
       return $post_id;
 
     update_post_meta( $post_id, '_dont_muck', isset( $_POST['dont_muck'] ) ? true : '' );
-  }
-
-  function insertCSS()
-  {
-    // Only load this stylesheet if they're on post.php inside the dashboard
-    wp_enqueue_style( 'admin.css', plugins_url( 'css/admin.css', self::$plugin_url ) );
   }
 
   static function checked()

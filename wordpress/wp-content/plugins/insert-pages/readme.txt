@@ -2,7 +2,7 @@
 Contributors: figureone, the_magician
 Tags: insert, pages, shortcode, embed
 Requires at least: 3.0.1
-Tested up to: 5.2
+Tested up to: 5.4.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,9 +15,11 @@ Insert Pages lets you embed any WordPress content (e.g., pages, posts, custom po
 
 The real power of Insert Pages comes when you start creating custom post types, either [programmatically in your theme](http://codex.wordpress.org/Post_Types), or using another plugin like [Custom Post Type UI](http://wordpress.org/plugins/custom-post-type-ui/). You can then abstract away common data types (like videos, quizzes, due dates) into their own custom post types, and then show those pieces of content within your normal pages and posts by Inserting them as a shortcode.
 
-Here are two quick example use cases:
+### Advanced Tutorial
 
-### Normal Use
+Contributor Wes Modes has graciously written an updated tutorial for the Gutenberg era, focused on creating a custom post type with custom fields and a custom template for rendering content. Read it here: [https://medium.com/@wesmodes/using-wordpress-insert-pages-plugin-with-your-custom-post-types-and-custom-templates-535c141f9635](https://medium.com/@wesmodes/using-wordpress-insert-pages-plugin-with-your-custom-post-types-and-custom-templates-535c141f9635)
+
+### Example: Normal Use Case
 Say you teach a course and you're constantly referring to an assignment due date in your course website. The next semester the due date changes, and you have to go change all of the locations you referred to it. Instead, you'd rather just change the date once! With Insert Pages, you can do the following:
 
 1. Create a custom post type called **Due Date**.
@@ -25,7 +27,7 @@ Say you teach a course and you're constantly referring to an assignment due date
 1. Edit all the pages where the due date occurs and use the *Insert Pages* toolbar button to insert a reference to the *Due Date* you just created. Be sure to set the *Display* to **Content** so *Fri Nov 22, 2013* shows wherever you insert it. The shortcode you just created should look something like this: `[insert page='assignment-1-due-date' display='content']`
 1. That's it! Now, when you want to change the due date, just edit the *Assignment 1 Due Date* custom post you created, and it will automatically be updated on all the pages you inserted it on.
 
-### Advanced Use
+### Example: Advanced Use Case
 Say your site has a lot of video content, and you want to include video transcripts and video lengths along with the videos wherever you show them. You could just paste the transcripts into the page content under the video, but then you'd have to do this on every page the video showed on. (It's also just a bad idea, architecturally!) With Insert Pages, you can use a custom post type and create a custom theme template to display your videos+transcripts+lengths just the way you want!
 
 1. Create a custom post type called **Video**.
@@ -47,6 +49,29 @@ The possibilities are endless!
 1. Use the toolbar button while editing any page to insert any other page.
 
 == Frequently Asked Questions ==
+
+= How do I create a custom template for use by Insert Pages?
+
+A basic template would look like the following. This would be a file on your theme directory, e.g., `your-custom-template.php`:
+
+`<?php
+/**
+ * Template Name: Name of your custom template
+ */
+?>
+<div id="your-wrapper-div">
+  <?php while ( have_posts() ) : the_post(); ?>
+    <div id="your-container-div-for-each-post">
+      <?php the_content(); ?>
+      <?php the_post_thumbnail(); ?>
+    </div>
+  <?php endwhile; ?>
+</div>`
+
+You can use whatever template tags that you'd like, check out the WordPress documentation.
+
+* [https://developer.wordpress.org/themes/basics/template-tags/](https://developer.wordpress.org/themes/basics/template-tags/)
+* [https://developer.wordpress.org/themes/references/list-of-template-tags/](https://developer.wordpress.org/themes/references/list-of-template-tags/)
 
 = How do I limit the list of pages in the dialog to certain post types? =
 
@@ -85,6 +110,44 @@ Just one! The plugin prevents you from embedding a page in itself, but you can t
 3. Insert Pages shortcode example.
 
 == Changelog ==
+
+= 3.5.5 =
+* Save user’s selected display and template in the TinyMCE dialog for restoring next time they insert a page. Props @ladygeekgeek for the idea!
+* Tested up to WordPress 5.4.2.
+* Bump lodash from 4.17.15 to 4.17.19 (dev dependency only).
+
+= 3.5.4 =
+* Support custom scripts and styles in inserted pages created with Visual Composer version 26.0.
+
+= 3.5.3.2 =
+* Fix for loop detection: we had accidentally prevented pages from inserting another page multiple times (not in a loop).
+
+= 3.5.3.1 =
+* Revert change affecting Elementor using legacy insert method. Props @progameinc for reporting it so quickly!
+
+= 3.5.3 =
+* Update Gutenberg block (replace deprecated calls).
+* Add automatic loop detection; nested inserts now work by default.
+* Deprecate `insert_pages_apply_nesting_check` filter since it's now unnecessary.
+
+= 3.5.2 =
+* Add FAQ for creating a custom template. [Details](https://wordpress.org/support/topic/suggestion-for-faq-documentation/)
+* Parse `<!--nextpage-->` separators in Content and All displays on legacy insert mode. [Details](https://wordpress.org/support/topic/not-working-with-insert-page/)
+* Add support for custom templates for Insert Pages within Elementor and Beaver Builder. [Details](https://wordpress.org/support/topic/use-a-custom-template-doesnt-show-custom-template-filename-in-builder/)
+
+= 3.5.1 =
+* Fix Gutenberg block assets (js, css) loading on front end.
+* Add option to disable Insert Pages Gutenberg block.
+
+= 3.5.0 =
+* Add Gutenberg block.
+* Fix for [WSOD](https://wordpress.org/support/topic/app-v3-4-7-not-compatible-with-wp-v4-9-6) in WordPress versions before 5.0 (unintentionally included Gutenberg block in last release).
+* Fix PHP warnings in some contexts.
+
+= 3.4.7 =
+* Larger Insert Page modal height in Classic Editor (accommodate larger WP 5.3 form elements).
+* Update npm packages (gutenberg build dependencies).
+* Tested up to WordPress 5.3.
 
 = 3.4.6 =
 * Respect <!--more--> quicktag in excerpt and excerpt-only displays (in normal insert method).
@@ -209,7 +272,6 @@ Example 1:
  *   display: Content to display from inserted page.
  *   class: Extra classes to add to inserted page wrapper element.
  *   inline: Boolean indicating wrapper element should be a span.
- *   should_apply_nesting_check: Whether to disable nested inserted pages.
  *   should_apply_the_content_filter: Whether to apply the_content filter to post contents and excerpts.
  *   wrapper_tag: Tag to use for the wrapper element (e.g., div, span).
  */
@@ -228,7 +290,6 @@ Example 2:
  *   display: Content to display from inserted page.
  *   class: Extra classes to add to inserted page wrapper element.
  *   inline: Boolean indicating wrapper element should be a span.
- *   should_apply_nesting_check: Whether to disable nested inserted pages.
  *   should_apply_the_content_filter: Whether to apply the_content filter to post contents and excerpts.
  *   wrapper_tag: Tag to use for the wrapper element (e.g., div, span).
  */
