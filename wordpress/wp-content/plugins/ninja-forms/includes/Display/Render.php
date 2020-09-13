@@ -83,9 +83,6 @@ final class NF_Display_Render
             unset( $settings[ $name ] );
         }
 
-        // Remove the embed_form setting to avoid pagebuilder conflicts.
-        $settings[ 'embed_form' ] = '';
-
         $settings = array_merge( Ninja_Forms::config( 'i18nFrontEnd' ), $settings );
         $settings = apply_filters( 'ninja_forms_display_form_settings', $settings, $form_id );
 
@@ -119,7 +116,7 @@ final class NF_Display_Render
         // If maintenance isn't empty and the bool is set to 1 then..
         if( true == $maintenance ) {
             // Set a filterable maintenance message and echo it out.
-            $maintenance_msg = apply_filters( 'nf_maintenance_message', esc_html__( 'This form is currently undergoing maintenance. Please try again later.', 'ninja-forms' ) );
+            $maintenance_msg = apply_filters( 'nf_maintenance_message', __( 'This form is currently undergoing maintenance. Please try again later.', 'ninja-forms' ) );
             echo $maintenance_msg;
 
             // bail.
@@ -152,7 +149,7 @@ final class NF_Display_Render
         $fields = array();
 
         if( empty( $form_fields ) ){
-            echo esc_html__( 'No Fields Found.', 'ninja-forms' );
+            echo __( 'No Fields Found.', 'ninja-forms' );
         } else {
 
             // TODO: Replace unique field key checks with a refactored model/factory.
@@ -412,8 +409,6 @@ final class NF_Display_Render
         $form[ 'settings' ] = array_merge( Ninja_Forms::config( 'i18nFrontEnd' ), $form[ 'settings' ] );
         $form[ 'settings' ] = apply_filters( 'ninja_forms_display_form_settings', $form[ 'settings' ], $form_id );
 
-        // Remove the embed_form setting to avoid pagebuilder conflicts.
-        $form[ 'settings' ][ 'embed_form' ] = '';
 
         $form[ 'settings' ][ 'is_preview' ] = TRUE;
 
@@ -436,7 +431,7 @@ final class NF_Display_Render
         $fields = array();
 
         if( empty( $form['fields'] ) ){
-            echo esc_html__( 'No Fields Found.', 'ninja-forms' );
+            echo __( 'No Fields Found.', 'ninja-forms' );
         } else {
             foreach ($form['fields'] as $field_id => $field) {
 
@@ -686,6 +681,14 @@ final class NF_Display_Render
                 }
             }
         }
+
+        ?>
+        <script>
+            var post_max_size = '<?php echo WPN_Helper::string_to_bytes( ini_get('post_max_size') ); ?>';
+            var upload_max_filesize = '<?php echo WPN_Helper::string_to_bytes( ini_get( 'upload_max_filesize' ) ); ?>';
+            var wp_memory_limit = '<?php echo WPN_Helper::string_to_bytes( WP_MEMORY_LIMIT ); ?>';
+        </script>
+        <?php
 
         // Action to Output Custom Templates
         do_action( 'ninja_forms_output_templates' );

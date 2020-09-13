@@ -20,6 +20,8 @@ define( [], function() {
 
 		initialize: function() {
 
+            console.log(this);
+
             this.set( 'id', Number( this.get( 'id' ) ) );
             
             if( this.get( 'id' ) ) {
@@ -44,7 +46,7 @@ define( [], function() {
             var that = this;
             jQuery.ajax({
                 type: "POST",
-                url: ajaxurl + '?action=nf_forms&method_override=delete&form_id=' + this.get( 'id' ) + '&security=' + nfAdmin.ajaxNonce,
+                url: ajaxurl + '?action=nf_forms&method_override=delete&form_id=' + this.get( 'id' ),
                 success: function( response ){
                     var response = JSON.parse( response );
                     that.collection.remove( that );

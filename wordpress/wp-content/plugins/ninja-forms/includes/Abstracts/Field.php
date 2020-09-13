@@ -3,7 +3,7 @@
 /**
  * Class NF_Abstracts_Field
  */
-abstract class NF_Abstracts_Field extends NF_Abstracts_Element
+abstract class NF_Abstracts_Field
 {
     /**
     * @var string
@@ -146,12 +146,8 @@ abstract class NF_Abstracts_Field extends NF_Abstracts_Element
             $field[ 'value' ] = implode( '', $field[ 'value' ] );
         }
 
-        if( isset( $field['required'] ) && 1 == intval( $field['required'] ) ) {
-            $val = trim( $field['value'] );
-            if( empty( $val ) && '0' !== $val ){
-                $errors['slug'] = 'required-error';
-                $errors['message'] = esc_html__('This field is required.', 'ninja-forms');
-            }
+        if( isset( $field['required'] ) && 1 == $field['required'] && is_null( trim( $field['value'] ) ) ){
+            $errors[] = 'Field is required.';
         }
         return $errors;
     }
@@ -172,7 +168,7 @@ abstract class NF_Abstracts_Field extends NF_Abstracts_Element
      */
     public function admin_form_element( $id, $value )
     {
-        return '<input class="widefat" name="fields[' . absint( $id ) . ']" value="' . esc_attr( $value ) . '" type="text" />';
+        return '<input class="widefat" name="fields[' . intval( $id ) . ']" value="' . esc_attr( $value ) . '" />';
     }
 
     public function get_name()
@@ -210,9 +206,8 @@ abstract class NF_Abstracts_Field extends NF_Abstracts_Element
         if( $this->_parent_type ){
             return $this->_parent_type;
         }
-
         // If a type is not set, return 'textbox'
-        return ( get_parent_class() && isset ( parent::$_type ) ) ? parent::$_type : 'textbox';
+        return ( get_parent_class() ) ? parent::$_type : 'textbox';
     }
 
     public function get_settings()

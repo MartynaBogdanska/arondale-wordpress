@@ -2,7 +2,7 @@
 
 return apply_filters( 'ninja_forms_plugin_settings_defaults', array(
 
-    'date_format' => 'm/d/Y',
+    'date_format' => __( 'm/d/Y', 'ninja-forms' ),
     'currency' => 'USD',
 
     'recaptcha_site_key' => '',

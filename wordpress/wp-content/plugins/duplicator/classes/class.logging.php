@@ -49,7 +49,7 @@ class DUP_Log
             throw new Exception("A name value is required to open a file log.");
         }
         self::Close();
-        if ((self::$logFileHandle = @fopen(DUP_Settings::getSsdirPath()."/{$nameHash}.log", "a+")) === false) {
+        if ((self::$logFileHandle = @fopen(DUPLICATOR_SSDIR_PATH."/{$nameHash}.log", "a+")) === false) {
             self::$logFileHandle = null;
             return false;
         } else {
@@ -68,24 +68,20 @@ class DUP_Log
      */
     public static function Close()
     {
-        $result = true;
-        
         if (!is_null(self::$logFileHandle)) {
             $result              = @fclose(self::$logFileHandle);
             self::$logFileHandle = null;
-        } else {
-            $result = true;
         }
         return $result;
     }
 
-    /**
-     *  General information send to the package log if opened
-     *  @param string $msg	The message to log
-     *
-     *  REPLACE TO DEBUG: Memory consumption as script runs
-     * 	$results = DUP_Util::byteSize(memory_get_peak_usage(true)) . "\t" . $msg;
-     * 	@fwrite(self::$logFileHandle, "{$results} \n");
+	/**
+	 *  General information send to the package log if opened
+	 *  @param string $msg	The message to log
+	 *
+	 *  REPLACE TO DEBUG: Memory consumption as script runs
+	 * 	$results = DUP_Util::byteSize(memory_get_peak_usage(true)) . "\t" . $msg;
+	 * 	@fwrite(self::$logFileHandle, "{$results} \n");
      *
      *  @param string $msg	The message to log
      *
@@ -93,9 +89,7 @@ class DUP_Log
      */
     public static function Info($msg)
     {
-        if (self::$traceEnabled) {
-            self::Trace($msg);
-        }
+        self::Trace($msg);
         if (!is_null(self::$logFileHandle)) {
             @fwrite(self::$logFileHandle, $msg."\n");
         }
@@ -213,7 +207,7 @@ class DUP_Log
 	{
 		$default_key		 = self::getDefaultKey();
 		$backup_log_filename = "dup_$default_key.log1";
-		$backup_path		 = DUP_Settings::getSsdirPath()."/".$backup_log_filename;
+		$backup_path		 = DUPLICATOR_SSDIR_PATH."/".$backup_log_filename;
 		return $backup_path;
 	}
 
@@ -226,7 +220,7 @@ class DUP_Log
 	{
 		$default_key	 = self::getDefaultKey();
 		$log_filename	 = "dup_$default_key.log";
-		$file_path		 = DUP_Settings::getSsdirPath()."/".$log_filename;
+		$file_path		 = DUPLICATOR_SSDIR_PATH."/".$log_filename;
 		return $file_path;
 	}
 
@@ -269,7 +263,7 @@ class DUP_Log
 		@fwrite(self::$logFileHandle, "{$err_msg}");
 
 		switch ($behavior) {
-            
+
 			case Dup_ErrorBehavior::ThrowException:
 				DUP_LOG::trace("throwing exception");
 				throw new Exception("DUPLICATOR ERROR: Please see the 'Package Log' file link below.");
@@ -452,7 +446,6 @@ class DUP_Handler
 
         if (self::$codeReference) {
             $result .= ' [CODE:'.$errno.'|FILE:'.$errfile.'|LINE:'.$errline.']';
-            $result .= "\n".wp_debug_backtrace_summary();
         }
 
         return $result;
@@ -527,3 +520,5 @@ class DUP_Handler
         }
     }
 }
+
+DUP_Log::Init();

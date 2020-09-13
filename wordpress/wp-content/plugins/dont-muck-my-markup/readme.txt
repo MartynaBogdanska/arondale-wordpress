@@ -2,8 +2,8 @@
 Contributors: Martyn Chamberlin
 Tags: remove markup, disable auto formatting, default formatting, wpautop
 Requires at least: 3.9
-Tested up to: 5.3
-Stable tag: 5.3
+Tested up to: 4.9
+Stable tag: 4.9
 
 Don't Muck My Markup lets you disable all auto-generated HTML markup from your posts and pages on a page-by-page basis.
 
@@ -37,9 +37,6 @@ I hope you use and enjoy __Don't Muck My Markup__ as much as I enjoyed building 
 
 == Changelog ==
 
-= 1.8 =
-- Removed some styling from the admin dashboard that was no longer necessary.
-
 = 1.7 =
 - PHP 4 style constructors (methods that have the same name as the class they are defined in) are deprecated in PHP 7, and this update fixes the warning about this that you get when you've set `define('WP_DEBUG', true);` in your `wp-config.php` file.
 
@@ -53,6 +50,7 @@ I hope you use and enjoy __Don't Muck My Markup__ as much as I enjoyed building 
 
 = 1.4 =
 - Adding a new feature that allows users to disable auto formatting across their entire site with the click of a button.
+
 
 = 1.3 =
 - Buxfixes

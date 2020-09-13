@@ -36,17 +36,16 @@ jQuery(function($) {
 		
 		$("body").on("click",".wpgmza_copy_shortcode", function() {
 			var $temp = $('<input>');
-			//var $tmp2 = $('<span id="wpgmza_tmp" style="display:none; width:100%; text-align:center;">');
+			var $tmp2 = $('<span id="wpgmza_tmp" style="display:none; width:100%; text-align:center;">');
 			$("body").append($temp);
 			$temp.val($(this).val()).select();
 			document.execCommand("copy");
 			$temp.remove();
-			//$(this).after($tmp2);
-			//$($tmp2).html(wpgmaps_localize_strings["wpgm_copy_string"]);
-			//$($tmp2).fadeIn();
-			//setTimeout(function(){ $($tmp2).fadeOut(); }, 1000);
-			//setTimeout(function(){ $($tmp2).remove(); }, 1500);
-			WPGMZA.notification(wpgmaps_localize_strings["wpgm_copy_string"]);
+			$(this).after($tmp2);
+			$($tmp2).html(wpgmaps_localize_strings["wpgm_copy_string"]);
+			$($tmp2).fadeIn();
+			setTimeout(function(){ $($tmp2).fadeOut(); }, 1000);
+			setTimeout(function(){ $($tmp2).remove(); }, 1500);
 		});
 
 		$('#wpgmza_settings_enable_usage_tracking').change(function(event) {
@@ -116,24 +115,15 @@ jQuery(function($) {
 	
 	$(window).on("load", function(event) {
 		
-		if(WPGMZA.settings.engine != "open-layers")
+		if(WPGMZA.settings.engine == "google-maps")
 			return;
 		
 		$(".wpgmza-open-layers-feature-unavailable:not(.notice)").each(function(index, el) {
 			
 			var warning = $($(".notice.wpgmza-open-layers-feature-unavailable")[0]).clone();
 			$(warning).show();
+			$(el).prepend(warning);
 			
-			
-            if ($(el).hasClass('make-left')) {
-                $(warning).css('float', 'none');
-            } 
-
-
-            $(el).prepend(warning);
-			
-			
-
 			$.merge(
 				$(el).find("input, select, textarea, button, .button-primary"),
 				$(el).siblings("input, select, textarea, button, .button-primary")

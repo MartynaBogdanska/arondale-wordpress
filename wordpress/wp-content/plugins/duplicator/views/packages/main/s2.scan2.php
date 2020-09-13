@@ -203,11 +203,7 @@ WP SETTINGS -->
 		$('#data-srv-wp-version').html(Duplicator.Pack.setScanStatus(data.SRV.WP.version));
 		$('#data-srv-wp-core').html(Duplicator.Pack.setScanStatus(data.SRV.WP.core));
 		// $('#data-srv-wp-cache').html(Duplicator.Pack.setScanStatus(data.SRV.WP.cache));
-		var duplicatorScanWPStatus = $('#data-srv-wp-all');
-		duplicatorScanWPStatus.html(Duplicator.Pack.setScanStatus(data.SRV.WP.ALL));
-		if ('Warn' == data.SRV.WP.ALL) {
-			duplicatorScanWPStatus.parent().click();
-		}
+		$('#data-srv-wp-all').html(Duplicator.Pack.setScanStatus(data.SRV.WP.ALL));
 	}
 	
 })(jQuery);
