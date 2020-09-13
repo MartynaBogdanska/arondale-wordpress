@@ -25,19 +25,19 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 					<div class="site-info">
 						<div class="row">
-  							<div class="col-md-6">
+  							<div class="col-md-4 pr-5">
 								<h5>ABOUT</h5>
 								<p class="small">Arondale is a Queensland privately-owned commercial construction company founded in 1989. Working with some of the industry’s best known commercial builders in that time, we have solidified our place as a market leader. Equipped with some of the industry’s best and supported by our loyal suppliers, Arondale strives on continuously achieving great results for our clients within budget to a high level of detail.</p>
-								<p class="small">We focus on five main key verticals: Medical, Education, Retail, Office and Aged Care/Retirement.</p>
+								<p class="small">We focus on six main key verticals: Medical, Education, Retail, Office, Aged Care/Retirement and Entertainment &amp; Other.</p>
 							</div>
 							<div class="col-md-3">
 								<h5>CONTACT</h5>
 								<p class="small">Arondale</p>
-								<p class="small">Unit 2 / 16 Perrin Place<br>Salisbury, QLD 4107</p>
+								<p class="small">Unit 1 / 225 Queensport Road North<br>Murarrie, QLD 4172</p>
 								<p class="small"><a href="mailto:enquiries@arondale.com.au">enquiries@arondale.com.au</a></p>
 								<p class="small">+61 (07) 3277 8000</p>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<h5>SITE MAP</h5>
 								<p class="small"><a href="../#about">About</a></p>
 								<p class="small"><a href="../#projects">Project</a></p>
@@ -45,7 +45,12 @@ $container = get_theme_mod( 'understrap_container_type' );
 								<p class="small"><a href="/terms-of-use">Terms of use</a></p>
 								<p class="small"><a href="/privacy-policy">Privacy policy</a></p>
 							</div>
+							<div class="col-md-3">
+								<img src="/wp-content/uploads/2020/09/Queensland-Owned-and-Operated-background.png" alt="" width="" class="my-5">
+							</div>
 						</div>
+					</div>
+					
 					</div><!-- .site-info -->
 
 				</footer><!-- #colophon -->
@@ -58,7 +63,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 	<div class="site-rights text-center">
 		<div class="container small">
-		© Arondale Pty Ltd 2019
+		© Arondale Pty Ltd 2020
 		</div>
 	</div><!-- .site-rights -->
 
